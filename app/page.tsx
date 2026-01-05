@@ -1,65 +1,99 @@
-import Image from "next/image";
+import Link from "next/link";
+import Navbar from "@/components/public/navbar";
+import Footer from "@/components/public/footer";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { ArrowRight, Star, ShieldCheck, TrendingUp } from "lucide-react";
+import { AllStoresSection } from "@/components/public/all-stores-sections";
+import { FeaturedStores } from "@/components/public/featured-stores";
 
 export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+    return (
+        <>
+            <Navbar />
+
+            <main>
+                <section className="bg-linear-to-b from-primary/10 to-transparent py-20 md:py-32">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center">
+                            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
+                                Discover Quality Products from Trusted Vendors
+                            </h1>
+                            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+                                Browse thousands of products from verified sellers. Shop with confidence and support independent
+                                businesses.
+                            </p>
+                            <div className="flex gap-4 justify-center flex-wrap">
+                                <Button size="lg" asChild>
+                                    <Link href="/stores">
+                                        Explore Stores <ArrowRight className="w-4 h-4 ml-2" />
+                                    </Link>
+                                </Button>
+                                <Button size="lg" variant="outline" asChild>
+                                    <Link href="#categories">View Categories</Link>
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <div className="flex items-center justify-between mb-12">
+                        <div>
+                            <h2 className="text-3xl font-bold text-foreground mb-2">Featured Stores</h2>
+                            <p className="text-muted-foreground">Handpicked sellers with excellent ratings</p>
+                        </div>
+                        <Link href="/stores" className="text-primary hover:text-primary/80 flex items-center gap-2">
+                            View All <ArrowRight className="w-4 h-4" />
+                        </Link>
+                    </div>
+
+                    <FeaturedStores />
+                </section>
+
+                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-muted/30 rounded-lg">
+                    <div className="mb-12">
+                        <h2 className="text-3xl font-bold text-foreground mb-2">All Stores</h2>
+                        <p className="text-muted-foreground">Browse all available stores and discover products</p>
+                    </div>
+
+                    <AllStoresSection />
+                </section>
+
+                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <h2 className="text-3xl font-bold text-foreground mb-12 text-center">Why Choose VendorHub?</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {[
+                            {
+                                icon: ShieldCheck,
+                                title: "Verified Vendors",
+                                description: "All sellers are verified and reviewed by our community.",
+                            },
+                            {
+                                icon: TrendingUp,
+                                title: "Growing Marketplace",
+                                description: "Discover new products and sellers every day.",
+                            },
+                            {
+                                icon: Star,
+                                title: "Top Rated",
+                                description: "Shop from the most trusted sellers with proven ratings.",
+                            },
+                        ].map((feature, idx) => {
+                            const Icon = feature.icon
+                            return (
+                                <Card key={idx} className="p-6">
+                                    <Icon className="w-10 h-10 text-primary mb-4" />
+                                    <h3 className="font-bold text-lg mb-2">{feature.title}</h3>
+                                    <p className="text-muted-foreground">{feature.description}</p>
+                                </Card>
+                            )
+                        })}
+                    </div>
+                </section>
+            </main>
+
+            <Footer />
+        </>
+    );
 }
