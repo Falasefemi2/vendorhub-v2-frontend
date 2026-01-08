@@ -1,4 +1,4 @@
-/** @format */
+import { ProductListResponse } from "../product/types";
 
 export interface StoreResponse {
   id: string;
@@ -11,4 +11,19 @@ export interface StoreResponse {
   updated_at?: string;
 }
 
+export interface MyStoreResponse {
+  store: StoreResponse;
+  products: ProductListResponse[];
+  store_url: string;
+}
+
 export type StoreListResponse = StoreResponse[];
+
+
+export interface UpdateStoreRequest {
+  bio?: string;
+  email?: string;
+  store_name?: string;
+  username?: string;
+  whatsapp_number?: string;
+}

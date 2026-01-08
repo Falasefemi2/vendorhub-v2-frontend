@@ -1,8 +1,6 @@
-/** @format */
-
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import apiClient from "../../client";
-import { StoreResponse, StoreListResponse } from "./types";
+import { StoreResponse, StoreListResponse, UpdateStoreRequest } from "./types";
 import { useStoreStore } from "@/utils/store/storestore";
 
 export const storeQueryKeys = {
@@ -12,6 +10,7 @@ export const storeQueryKeys = {
   search: (q: string) => [...storeQueryKeys.all, "search", q] as const,
   details: (id: string) => [...storeQueryKeys.all, "detail", id] as const,
   slug: (slug: string) => [...storeQueryKeys.all, "slug", slug] as const,
+  myStore: () => [...storeQueryKeys.all, "my"] as const,
 };
 
 export const useGetStores = (page = 1, page_size = 20) => {
@@ -131,5 +130,56 @@ export const useGetStoreBySlug = (slug: string) => {
       }
     },
     enabled: !!slug,
+  });
+};
+
+export const useGetMyStore = () => {
+  const { setError, setIsLoading } = useStoreStore();
+  return useQuery({
+    queryKey: storeQueryKeys.myStore(),
+    queryFn: async () => {
+      setIsLoading(true);
+      try {
+        const response = await apiClient.get<StoreResponse>(`/stores/my`);
+        return response.data;
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "Failed to fetch your store";
+        setError(message);
+        throw error;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+  });
+};
+
+export const useUpdateMyStore = () => {
+  const queryClient = useQueryClient();
+  const { setError } = useStoreStore();
+
+  return useMutation({
+    mutationFn: async (data: UpdateStoreRequest) => {
+      const response = await apiClient.put<StoreResponse>(
+        `/stores/my`,
+        data
+      );
+      return response.data;
+    },
+    onSuccess: (data) => {
+      // Invalidate and refetch the my store query
+      queryClient.invalidateQueries({
+        queryKey: storeQueryKeys.myStore(),
+      });
+      // Update the cache directly with the new data
+      queryClient.setQueryData(storeQueryKeys.myStore(), data);
+    },
+    onError: (error) => {
+      const message =
+        error instanceof Error ? error.message : "Failed to update store";
+      setError(message);
+    },
   });
 };
