@@ -64,17 +64,14 @@ function StoresContent() {
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {list.map((store) => (
                                 <Card key={store.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
-                                    <div className="h-40 bg-linear-to-br from-primary/20 to-secondary/20" />
+                                    <div className="h-40 bg-linear-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                                        <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-white uppercase text-center px-3 word-break-word">
+                                            {store.name}
+                                        </h2>
+                                    </div>
                                     <div className="p-6">
-                                        <h3 className="font-bold text-lg mb-2 line-clamp-1">{store.name}</h3>
-                                        {/* <div className="flex items-center gap-2 mb-4">
-                                            <div className="flex gap-1">
-                                                {[...Array(5)].map((_, i) => (
-                                                    <Star key={i} className="w-4 h-4 fill-accent text-accent" />
-                                                ))}
-                                            </div>
-                                            <span className="text-sm text-muted-foreground">4.9 (240 reviews)</span>
-                                        </div> */}
+                                        <h3 className="sr-only">{store.name}</h3>
+                                        <h4 className="font-medium text-sm mb-2 text-muted-foreground">{store.slug}</h4>
                                         <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
                                             {store.bio || "Curated collection of handpicked products"}
                                         </p>

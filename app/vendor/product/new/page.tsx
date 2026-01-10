@@ -11,6 +11,7 @@ import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCreateProduct } from "@/utils/api/store/product";
+import { toast } from "sonner";
 
 export default function NewProductPage() {
     const router = useRouter();
@@ -72,8 +73,19 @@ export default function NewProductPage() {
                 price: Number.parseFloat(formData.price),
             },
             {
-                onSuccess: () => {
-                    router.push("/vendor/dashboard");
+                onSuccess: (data) => {
+                    toast.success("Product created successfully", {
+                        description: `Product Name: ${data.name} has been added to your store.`,
+                    });
+                    // After creating a product, navigate to the image upload UI for that product
+                    setTimeout(() => {
+                        router.push(`/vendor/product/${data.id}/images`)
+                    }, 1500)
+                },
+                onError: () => {
+                    toast.error("Failed to create product", {
+                        description: "Please try again later.",
+                    });
                 },
             },
         );

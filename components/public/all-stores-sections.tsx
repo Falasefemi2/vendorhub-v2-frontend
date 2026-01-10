@@ -32,9 +32,14 @@ export function AllStoresSection() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 {stores.map((store) => (
                     <Card key={store.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
-                        <div className="h-40 bg-linear-to-br from-primary/20 to-secondary/20" />
+                        <div className="h-40 bg-linear-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                            <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-white uppercase text-center px-3 word-break-word">
+                                {store.name}
+                            </h2>
+                        </div>
                         <div className="p-4">
-                            <h3 className="font-bold text-base mb-2 line-clamp-1">{store.name}</h3>
+                            <h3 className="sr-only">{store.name}</h3>
+                            <h4 className="font-medium text-sm mb-2 text-muted-foreground">{store.slug}</h4>
                             {/* <div className="flex items-center gap-1 mb-3">
                                 <div className="flex gap-0.5">
                                     {[...Array(5)].map((_, i) => (
@@ -44,7 +49,7 @@ export function AllStoresSection() {
                                 <span className="text-xs text-muted-foreground">4.9</span>
                             </div> */}
                             <p className="text-xs text-muted-foreground mb-3 line-clamp-2">{store.bio || "Quality products"}</p>
-                            <Button size="sm" className="w-full bg-transparent" variant="outline" asChild>
+                            <Button size="sm" className="w-full" asChild>
                                 <Link href={`/store/${store.slug}`}>View</Link>
                             </Button>
                         </div>

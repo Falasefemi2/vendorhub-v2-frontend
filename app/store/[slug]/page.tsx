@@ -98,13 +98,32 @@ export default function StorePage() {
             <p className="text-muted-foreground">No products available for this store.</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {products.map((p) => (
-                <div key={p.id} className="border border-border rounded-md p-4">
-                  <h3 className="text-lg font-semibold text-foreground mb-1">{p.name}</h3>
-                  <p className="text-sm text-muted-foreground mb-2">{p.description}</p>
-                  <p className="text-primary font-bold">₦{p.price.toLocaleString("en-NG", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                </div>
-              ))}
+              {products.map((p) => {
+                const firstImage = (p as any)?.images?.[0] as any | undefined;
+                const imageSrc =
+                  firstImage?.imageUrl || firstImage?.image_url || firstImage?.imageURL || undefined;
+
+                return (
+                  <div key={p.id} className="border border-border rounded-md p-4">
+                    <div className="flex gap-4">
+                      <div className="w-32 h-32 bg-muted/10 rounded overflow-hidden flex-shrink-0">
+                        {imageSrc ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={imageSrc} alt={p.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-muted-foreground">No image</div>
+                        )}
+                      </div>
+
+                      <div className="flex-1">
+                        <h3 className="text-lg font-semibold text-foreground mb-1">{p.name}</h3>
+                        <p className="text-sm text-muted-foreground mb-2">{p.description}</p>
+                        <p className="text-primary font-bold">₦{p.price.toLocaleString("en-NG", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </Card>

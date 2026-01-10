@@ -29,9 +29,14 @@ export function FeaturedStores() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {stores.slice(0, 3).map((store) => (
                 <Card key={store.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
-                    <div className="h-40 bg-linear-to-br from-primary/20 to-secondary/20" />
+                    <div className="h-40 bg-linear-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                        <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white uppercase text-center px-4 wrap-break-word">
+                            {store.name}
+                        </h2>
+                    </div>
                     <div className="p-6">
-                        <h3 className="font-bold text-lg mb-2 line-clamp-1">{store.name}</h3>
+                        <h3 className="sr-only">{store.name}</h3>
+                        <h4 className="font-medium text-sm mb-2 text-muted-foreground">{store.slug}</h4>
                         {/* <div className="flex items-center gap-2 mb-4">
                             <div className="flex gap-1">
                                 {[...Array(5)].map((_, i) => (
@@ -43,7 +48,7 @@ export function FeaturedStores() {
                         <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
                             {store.bio || "Curated collection of handpicked products"}
                         </p>
-                        <Button className="w-full bg-transparent" variant="outline" asChild>
+                        <Button className="w-full" asChild>
                             <Link href={`/store/${store.slug}`}>Visit Store</Link>
                         </Button>
                     </div>

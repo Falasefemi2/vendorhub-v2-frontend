@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Navbar from "@/components/public/navbar";
 import Footer from "@/components/public/footer";
-import z from "zod";
+import { z } from "zod";
 import { useSignUp } from "@/utils/api/store/auth";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -252,4 +252,3 @@ export default function SignupPage() {
     </>
   );
 }
-

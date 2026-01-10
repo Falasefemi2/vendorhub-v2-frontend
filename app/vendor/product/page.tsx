@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -91,6 +91,9 @@ function ProductsContent() {
               <thead>
                 <tr className="border-b border-border bg-muted/50">
                   <th className="text-left py-3 px-6 text-sm font-semibold text-muted-foreground">
+                    Image
+                  </th>
+                  <th className="text-left py-3 px-6 text-sm font-semibold text-muted-foreground">
                     Product Name
                   </th>
                   <th className="text-left py-3 px-6 text-sm font-semibold text-muted-foreground">
@@ -113,6 +116,12 @@ function ProductsContent() {
                     key={product.id}
                     className="border-b border-border hover:bg-muted/50 transition"
                   >
+                    <td className="py-4 px-6">
+                      {(() => {
+                        const images = ((product as any)?.images ?? []).map((img: any) => img?.imageUrl || img?.image_url || img?.imageURL).filter(Boolean) as string[];
+                        return <ProductImageCarousel images={images} alt={product.name} />;
+                      })()}
+                    </td>
                     <td className="py-4 px-6 font-medium text-foreground">
                       {product.name}
                     </td>
@@ -128,11 +137,10 @@ function ProductsContent() {
                     </td>
                     <td className="py-4 px-6">
                       <span
-                        className={`text-xs font-semibold px-3 py-1 rounded-full ${
-                          product.is_active
-                            ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
-                            : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300"
-                        }`}
+                        className={`text-xs font-semibold px-3 py-1 rounded-full ${product.is_active
+                          ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+                          : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300"
+                          }`}
                       >
                         {product.is_active ? "Active" : "Inactive"}
                       </span>
@@ -148,6 +156,9 @@ function ProductsContent() {
                           <Link href={`/vendor/product/${product.id}/edit`}>
                             <Edit className="w-4 h-4" />
                           </Link>
+                        </Button>
+                        <Button variant="outline" size="sm" className="gap-2" asChild>
+                          <Link href={`/vendor/product/${product.id}/images`}>Upload Image</Link>
                         </Button>
                         <Button
                           size="sm"
@@ -204,6 +215,45 @@ function ProductsContent() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+    </div>
+  );
+}
+
+function ProductImageCarousel({ images, alt }: { images: string[]; alt?: string }) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (index >= images.length) setIndex(0);
+  }, [images.length, index]);
+
+  if (!images || images.length === 0) {
+    return (
+      <div className="w-20 h-20 bg-muted/10 rounded overflow-hidden flex items-center justify-center text-muted-foreground text-xs">No image</div>
+    );
+  }
+
+  return (
+    <div className="w-20 h-20 bg-muted/10 rounded overflow-hidden relative">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={images[index]} alt={alt ?? "product image"} className="w-full h-full object-cover" />
+      {images.length > 1 && (
+        <div className="absolute inset-0 flex items-center justify-between px-1">
+          <button
+            type="button"
+            onClick={() => setIndex((i) => (i - 1 + images.length) % images.length)}
+            className="bg-black/40 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm"
+          >
+            ‹
+          </button>
+          <button
+            type="button"
+            onClick={() => setIndex((i) => (i + 1) % images.length)}
+            className="bg-black/40 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm"
+          >
+            ›
+          </button>
+        </div>
+      )}
     </div>
   );
 }
