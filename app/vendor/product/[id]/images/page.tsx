@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -16,10 +17,12 @@ export default function ProductImagesPage() {
     const { data: product, isLoading } = useGetProduct(productId);
     const { mutate: uploadImage, isPending } = useUploadProductImage();
 
-    const [position, setPosition] = useState<number>(0);
+    const [position, setPosition] = useState<number | string>(0);
 
     useEffect(() => {
-        if (product) setPosition(product.images?.length ?? 0);
+        if (product && product.images) {
+            setPosition(product.images.length);
+        }
     }, [product]);
 
     const [file, setFile] = useState<File | null>(null);
@@ -79,7 +82,7 @@ export default function ProductImagesPage() {
                                 type="number"
                                 min={0}
                                 value={position}
-                                onChange={(e) => setPosition(Number.parseInt(e.target.value || "0", 10))}
+                                onChange={(e) => setPosition(parseInt(e.target.value, 10) || 0)}
                                 className="w-24"
                             />
                         </div>
@@ -99,9 +102,16 @@ export default function ProductImagesPage() {
                         <h3 className="font-semibold">Existing Images</h3>
                         <div className="flex gap-4 mt-3 flex-wrap">
                             {product?.images?.length ? (
-                                product.images.map((img) => (
-                                    <div key={img.id} className="w-40 h-40 bg-muted/10 rounded overflow-hidden">
-                                        <img src={img.imageUrl} alt={`image-${img.id}`} className="w-full h-full object-cover" />
+                                product.images.map((img: any) => (
+                                    <div key={img.id} className="relative w-40 h-40 bg-muted/10 rounded overflow-hidden">
+                                        <Image
+                                            src={img.image_url || img.imageUrl}
+                                            alt={`image-${img.id}`}
+                                            fill
+                                            sizes="(max-width: 768px) 100px, 160px"
+                                            className="object-cover"
+                                            unoptimized
+                                        />
                                     </div>
                                 ))
                             ) : (
