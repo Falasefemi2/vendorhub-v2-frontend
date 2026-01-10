@@ -17,7 +17,7 @@ export default function ProductImagesPage() {
     const { data: product, isLoading } = useGetProduct(productId);
     const { mutate: uploadImage, isPending } = useUploadProductImage();
 
-    const [position, setPosition] = useState<number | string>(0);
+    const [position, setPosition] = useState<number>(0);
 
     useEffect(() => {
         if (product && product.images) {
