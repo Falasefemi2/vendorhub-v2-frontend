@@ -19,6 +19,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { PhoneInput } from "@/components/public/phone-input";
 
 export const signupFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -51,12 +52,12 @@ export default function SignupPage() {
     const payload = {
       ...data,
       store_name: data.storename,
-      whatsapp_number: data.whatsappNumber,  // Add this line
+      whatsapp_number: data.whatsappNumber,
     } as any;
 
     // remove the original keys so backend receives only snake_case versions
     delete payload.storename;
-    delete payload.whatsappNumber;  // Add this line
+    delete payload.whatsappNumber;
 
     signup(payload, {
       onSuccess: (response) => {
@@ -77,6 +78,7 @@ export default function SignupPage() {
       },
     });
   }
+
   return (
     <>
       <Navbar />
@@ -159,11 +161,12 @@ export default function SignupPage() {
                     <FormItem>
                       <FormLabel>WhatsApp Number</FormLabel>
                       <FormControl>
-                        <Input
-                          type="tel"
-                          placeholder="+234 800 000 0000"
-                          {...field}
-                          className="h-11"
+                        <PhoneInput
+                          placeholder="Enter your phone number"
+                          defaultCountry="NG"
+                          value={field.value}
+                          onChange={field.onChange}
+                          international
                         />
                       </FormControl>
                       <FormDescription>
